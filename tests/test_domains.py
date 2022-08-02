@@ -30,28 +30,37 @@ def test_verify_txt_record():
 
 @responses.activate
 def test_verify_meta_tag():
-	responses.add(responses.GET,
-				  'http://' + TEST_DOMAIN,
-                  body=io.open('tests/data/google.web.html', encoding='utf-8').read(),
-                  status=200,
-                  content_type='text/html')
+	responses.add(
+		responses.GET,
+		f'http://{TEST_DOMAIN}',
+		body=io.open('tests/data/google.web.html', encoding='utf-8').read(),
+		status=200,
+		content_type='text/html',
+	)
+
 	assert _verify_meta_tag(TEST_DOMAIN, "origin", "referrer") == True
 	assert _verify_meta_tag(TEST_DOMAIN, str(uuid.uuid4()), "fallible") == False
 
 
 @responses.activate
 def test_verify_file_exists():
-	responses.add(responses.GET,
-				  'http://' + TEST_DOMAIN + '/robots.txt',
-                  body='',
-                  status=200,
-                  content_type='text/html')
+	responses.add(
+		responses.GET,
+		f'http://{TEST_DOMAIN}/robots.txt',
+		body='',
+		status=200,
+		content_type='text/html',
+	)
+
 	random_str = str(uuid.uuid4())
-	responses.add(responses.GET,
-				  'http://' + TEST_DOMAIN + '/' + random_str,
-                  body='',
-                  status=404,
-                  content_type='text/html')
+	responses.add(
+		responses.GET,
+		f'http://{TEST_DOMAIN}/{random_str}',
+		body='',
+		status=404,
+		content_type='text/html',
+	)
+
 	assert _verify_file_exists(TEST_DOMAIN, "robots.txt") == True
 	assert _verify_file_exists(TEST_DOMAIN, random_str) == False
 

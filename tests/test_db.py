@@ -15,7 +15,7 @@ def test_get_code():
     setup_db()
     code = generate_code(TEST_DOMAIN, 'FILE')
     assert get_code(TEST_DOMAIN, 'FILE') == code
-    assert get_code(TEST_DOMAIN, 'METATAG') == None
+    assert get_code(TEST_DOMAIN, 'METATAG') is None
 
 
 def test_remove_code():

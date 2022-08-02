@@ -69,31 +69,31 @@ class MetaTagParser(HTMLParser):
 
 def _verify_meta_tag(domain, expected_value, tag=META_TAG_NAME):
     r = requests.get(
-        'http://' + domain,
-        headers={
-            'User-Agent': FAKE_USER_AGENT})
+        f'http://{domain}', headers={'User-Agent': FAKE_USER_AGENT}
+    )
+
     text = r.text
     parser = MetaTagParser(tag)
     parser.feed(text)
-    return bool(parser.value == expected_value)
+    return parser.value == expected_value
 
 
 def _verify_file_exists(domain, filename):
     r = requests.get('/'.join(['http:/', domain, filename]))
-    return bool(200 <= r.status_code < 300)
+    return 200 <= r.status_code < 300
 
 
 def verify_domain(domain, check_type):
     code = get_code(domain, check_type)
 
     if check_type not in CHECK_TYPES:
-        raise InvalidVerificationType(
-            '%s not in %s' % (check_type, str(CHECK_TYPES)))
+        raise InvalidVerificationType(f'{check_type} not in {str(CHECK_TYPES)}')
 
     if code is None:
         raise NoVerificationCodeExists(
-            'No verification code found for %s'
-            % str((domain, check_type)))
+            f'No verification code found for {(domain, check_type)}'
+        )
+
 
     response = False
 

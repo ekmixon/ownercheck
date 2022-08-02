@@ -46,10 +46,7 @@ def get_code(domain, check_type):
 			   WHERE domain=? AND checktype=?''',
                    (domain, check_type))
     row = cursor.fetchone()
-    if row is not None:
-        return row[0]
-    else:
-        return None
+    return row[0] if row is not None else None
 
 
 def remove_code(domain, check_type):

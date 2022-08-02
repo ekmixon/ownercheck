@@ -65,9 +65,8 @@ def verify_app(appstore_url, domain):
                     return True
             except:
                 pass
-        else:
-            if urlparse(i).netloc == domain:
-                return True
+        elif urlparse(i).netloc == domain:
+            return True
     return False
 
 
